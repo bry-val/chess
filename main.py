@@ -1,28 +1,53 @@
 def init_board(b):
-    King(b, (1, 5), "W")
-    King(b, (8, 5), "B")
+    Rook(b, (1, 1), "W")
+    Knight(b, (1, 2), "W")
+    Bishop(b, (1, 3), "W")
+    King(b, (1, 4), "W")
     Queen(b, (1, 5), "W")
+    Bishop(b, (1, 6), "W")
+    Knight(b, (1, 7), "W")
+    Rook(b, (1, 8), "W")
+
+    Pawn(b, (2, 1), "W")
+    Pawn(b, (2, 2), "W")
+    Pawn(b, (2, 3), "W")
+    Pawn(b, (2, 4), "W")
+    Pawn(b, (2, 5), "W")
+    Pawn(b, (2, 6), "W")
+    Pawn(b, (2, 7), "W")
+    Pawn(b, (2, 8), "W")
+
+    Rook(b, (8, 1), "B")
+    Knight(b, (8, 2), "B")
+    Bishop(b, (8, 3), "B")
+    King(b, (8, 4), "B")
     Queen(b, (8, 5), "B")
-    Bishop(b, (1, 5), "W")
-    Bishop(b, (8, 5), "B")
-    Rook(b, (1, 5), "W")
-    Rook(b, (8, 5), "B")
-    Pawn(b, (1, 5), "W")
-    Pawn(b, (8, 5), "B")
+    Bishop(b, (8, 6), "B")
+    Knight(b, (8, 7), "B")
+    Rook(b, (8, 8), "B")
+
+    Pawn(b, (7, 1), "B")
+    Pawn(b, (7, 2), "B")
+    Pawn(b, (7, 3), "B")
+    Pawn(b, (7, 4), "B")
+    Pawn(b, (7, 5), "B")
+    Pawn(b, (7, 6), "B")
+    Pawn(b, (7, 7), "B")
+    Pawn(b, (7, 8), "B")
 
 
 class Board:
 
     def __init__(self):
-        self.board = {(i, j): "." for i in range(1, 9) for j in range(1, 9)}
+        self.__board = {(i, j): "----" for i in range(1, 9) for j in range(1, 9)}
 
     def __setitem__(self, key, value):
-        self.board[key] = value
+        self.__board[key] = value
 
     def __str__(self):
         board_repr = ""
         counter = 0
-        for key, item in self.board.items():
+        for key, item in self.__board.items():
             board_repr += f" {item} "
             counter += 1
             if counter == 8:
@@ -36,15 +61,21 @@ class Piece:
         self.position = position
         self.symbol = symbol
         self.color = color
-        board[position] = f"({color}{symbol})"
+        board.__setitem__(position, self)
 
-    def move(self):
+    def move(self, new_position):
         pass
+
+    def __repr__(self):
+        return f"({self.color}{self.symbol})"
 
 
 class King(Piece):
     def __init__(self, board: Board, position: tuple[int, int], color: str):
         super().__init__(board, position, "K", color)
+
+    def move(self, new_position):
+        self.position = new_position
 
 
 class Queen(Piece):
@@ -59,7 +90,7 @@ class Bishop(Piece):
 
 class Knight(Piece):
     def __init__(self, board: Board, position: tuple[int, int], color: str):
-        super().__init__(board, position, "G", color)
+        super().__init__(board, position, "T", color)
 
 
 class Rook(Piece):
