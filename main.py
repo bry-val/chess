@@ -44,6 +44,9 @@ class Board:
     def __setitem__(self, key, value):
         self.__board[key] = value
 
+    def __getitem__(self, pos):
+        return self.__board[pos]
+
     def __str__(self):
         board_repr = ""
         counter = 0
@@ -55,16 +58,22 @@ class Board:
                 board_repr += "\n"
         return board_repr
 
+    def clear_pos(self, piece):
+        self[piece.position] = "---"
+
 
 class Piece:
     def __init__(self, board: Board, position: tuple[int, int], symbol: str, color: str):
         self.position = position
         self.symbol = symbol
         self.color = color
+        self.board = board
         board.__setitem__(position, self)
 
     def move(self, new_position):
-        pass
+        self.board.clear_pos(self)
+        self.position = new_position
+        self.board[new_position] = f"({self.color}{self.symbol})"
 
     def __repr__(self):
         return f"({self.color}{self.symbol})"
@@ -73,9 +82,6 @@ class Piece:
 class King(Piece):
     def __init__(self, board: Board, position: tuple[int, int], color: str):
         super().__init__(board, position, "K", color)
-
-    def move(self, new_position):
-        self.position = new_position
 
 
 class Queen(Piece):
@@ -107,6 +113,12 @@ def main():
     board = Board()
     init_board(board)
 
+    board[(1, 4)].move((4, 4))
+    board[(1, 5)].move((4, 3))
+    board[(1, 6)].move((6, 4))
+    board[(1, 7)].move((8, 4))
+    board[(1, 8)].move((5, 4))
+    board[(8, 2)].move((4, 7))
     print(board)
 
 
